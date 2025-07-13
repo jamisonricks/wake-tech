@@ -1,9 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <script src="script.js"></script>
+    <div id="header">
+      <h1>Task Manager</h1>
+    </div>
+
+    <div>
+      <form id="task-form">
+        <div class="form-row">
+          <label id="task-name-label" for="task-name">Enter a task name:</label>
+          <input id="task-name" name="task_name" type="text" value="" placeholder="Task Name">
+        </div>
+        <div class="form-row">
+          <label for="task-priority" id="task-priority-label">Select task priority:</label>
+          <select id="task-priority" name="task_priority">
+            <option value="low" selected>Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="task-important" id="task-important-label">Mark as Important?</label>
+          <input id="task-important" name="task_important" type="checkbox">
+        </div>
+        <div class="form-row">
+          <label for="task-complete" id="task-complete-label">Mark as Completed?</label>
+          <input id="task-complete" name="task_complete" type="checkbox">
+        </div>
+        <div class="form-row">
+          <button id="submit-button" type="submit">Submit Form</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="taskmanager">
+      <h2>Task List</h2>
+      <table id="task-table">
+        <thead>
+          <tr>
+            <td>Task Name</td>
+            <td>Date Added</td>
+            <td>Important</td>
+            <td>Complete</td>
+            <td>Delete</td>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <script src="script.js" defer></script>
   </body>
 </html>
