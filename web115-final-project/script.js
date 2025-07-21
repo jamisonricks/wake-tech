@@ -9,6 +9,12 @@ document.getElementById('task-form').addEventListener('submit', function(e) {
   const form_data = new FormData(form);
   const data = Object.fromEntries(form_data.entries());
 
+  // Prevent blank task names
+  if (!data.task_name || data.task_name.trim() == "") {
+    alert("Task name cannot be blank.");
+    return;
+  }
+
   // Create new task.
   const new_task = create_new_task(data);
 
@@ -21,20 +27,19 @@ document.getElementById('task-form').addEventListener('submit', function(e) {
 /**
  * Function to create a new task with the form data.
  * 
- * @param {object} data
- *   The form data as an object.
- * 
- * @returns {task}
- *   The new task.
+ * @param {object} data - The form data as an object.
+ * @returns {object} The new task.
  */
 function create_new_task(data) {
+  const now = new Date();
+  const formatted_date = now.toLocaleDateString();
   const task = {
     id: next_id,
     name: data.task_name,
     priority: data.task_priority,
     important: (data.task_important) ? true : false,
-    complete: (data.task_complete) ? true : false,
-    date: 'today',
+    complete: false,
+    date: formatted_date,
   }
   next_id++;
 
@@ -67,18 +72,16 @@ function add_task_to_manager(task) {
     default:
       // handle exception
   }
-  console.log(priority);
   const name_style = {
     strikethrough: (task.complete) ? 'line-through' : '',
-    highlight: (task.important) ? 'red' : '',
     style: priority,
+    highlight: (task.important) ? 'red' : '',
   }
 
   // Create row using task data
   row.innerHTML = `
-    <td class="task-name" style="text-decoration: ${name_style.strikethrough};color: ${name_style.highlight}; ${priority}">${task.name}</td>
+    <td class="task-name" style="text-decoration: ${name_style.strikethrough}; color: ${name_style.highlight}; ${priority}">${task.name}</td>
     <td>${task.date}</td>
-    <td><input class="important-checkbox" type="checkbox" ${task.important ? 'checked' : ''}></td>
     <td><input class="complete-checkbox" type="checkbox" ${task.complete ? 'checked' : ''}></td>
     <td><button class="delete-button">Delete Task</button></td>
   `;
@@ -86,19 +89,6 @@ function add_task_to_manager(task) {
   console.log(JSON.stringify(tasks));
 
   const task_name = row.querySelector('.task-name');
-
-  // Add important checkbox.
-  const important_checkbox = row.querySelector('.important-checkbox');
-  important_checkbox.addEventListener('change', () => {
-    if (important_checkbox.checked) {
-      task_name.style.color = 'red';
-      task.important = true;
-    } else {
-      task_name.style.color = 'black';
-      task.important = false;
-    }
-    console.log(JSON.stringify(tasks));
-  });
 
   // Add complete checkbox.
   const complete_checkbox = row.querySelector('.complete-checkbox');
